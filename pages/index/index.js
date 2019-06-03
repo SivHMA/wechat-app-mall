@@ -355,9 +355,9 @@ Page({
     
     this.setData({
       hideSummaryPopup: hideSummaryPopup,
-      totalPrice: shopCarInfo.totalPrice,
-      totalScore: shopCarInfo.totalScore,
-      shopNum: shopCarInfo.shopNum,
+      totalPrice: totalPrice,
+      totalScore: totalScore,
+      shopNum: shopNum,
       goods: goods
     });
   },
