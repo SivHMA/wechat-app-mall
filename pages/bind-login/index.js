@@ -109,6 +109,7 @@ Page({
               wx.setStorageSync('userid', res.data.info.base.userid)
               // 回到原来的地方放
               app.navigateToLogin = false
+              app.bindChanged = true
               wx.navigateBack({ delta: 2 });
             })
           }
@@ -150,6 +151,7 @@ Page({
       wx.hideLoading();
       if (res.code == 0) {
         wx.setStorageSync('userid', res.data.userid);
+        app.bindChanged = true;
         wx.navigateBack({});
         wx.showToast({
           title: '绑定成功',

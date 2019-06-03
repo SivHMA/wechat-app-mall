@@ -246,6 +246,10 @@ Page({
   },
 
   onShow: function () {
+    if (app.bindChanged) {
+      app.bindChanged = false;
+      this.onPullDownRefresh();
+    }
     this.refreshTotalPrice();
   },
   

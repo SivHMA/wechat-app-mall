@@ -117,6 +117,7 @@ Page({
           wx.setStorageSync('userid', res.data.info.base.userid) 
           // 回到原来的地方放
           app.navigateToLogin = false
+          app.bindChanged = true
           wx.navigateBack();
         })
       }
