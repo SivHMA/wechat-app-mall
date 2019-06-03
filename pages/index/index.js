@@ -329,24 +329,45 @@ Page({
   refreshTotalPrice: function () {
     var shopCarInfo = wx.getStorageSync('shopCarInfo');
     var goods = this.data.goods;
-    if (goods.length > 0 && shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
-      for (var j = 0; j < shopCarInfo.shopList.length; j++) {
-        var tmpShopCarMap = shopCarInfo.shopList[j];
-        for (var i = 0; i < goods.length; i++) {
-          if (tmpShopCarMap.goodsId === goods[i].id) {
-            goods[i].buyNum = tmpShopCarMap.number;
-            break;
+    this.resetGoodsBuyNum();
+    let hideSummaryPopup = true;
+    let totalPrice = 0;
+    let totalScore = 0;
+    let shopNum = 0;
+    if (shopCarInfo){
+      totalPrice = shopCarInfo.totalPrice;
+      totalScore = shopCarInfo.totalScore;
+      shopNum = shopCarInfo.shopNum;
+
+      if (goods.length > 0 && shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
+        hideSummaryPopup = false;
+        for (var j = 0; j < shopCarInfo.shopList.length; j++) {
+          var tmpShopCarMap = shopCarInfo.shopList[j];
+          for (var i = 0; i < goods.length; i++) {
+            if (tmpShopCarMap.goodsId === goods[i].id) {
+              goods[i].buyNum = tmpShopCarMap.number;
+              break;
+            }
           }
         }
-      }
+      } 
+    }
+    
+    this.setData({
+      hideSummaryPopup: hideSummaryPopup,
+      totalPrice: shopCarInfo.totalPrice,
+      totalScore: shopCarInfo.totalScore,
+      shopNum: shopCarInfo.shopNum,
+      goods: goods
+    });
+  },
 
-      this.setData({
-        hideSummaryPopup: false,
-        totalPrice: shopCarInfo.totalPrice,
-        totalScore: shopCarInfo.totalScore,
-        shopNum: shopCarInfo.shopNum,
-        goods: goods
-      });
+  resetGoodsBuyNum: function () {
+    var goods = this.data.goods;
+    if (goods.length > 0) {
+      for (var i = 0; i < goods.length; i++) {
+        goods[i].buyNum = 0;
+      }
     }
   },
 

@@ -252,27 +252,51 @@ Page({
   refreshTotalPrice: function () {
     var shopCarInfo = wx.getStorageSync('shopCarInfo');
     var goodsWrap = this.data.goodsWrap;
-    if (goodsWrap.length > 0 && shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
-      for (var j = 0; j < shopCarInfo.shopList.length; j++) {
-        var tmpShopCarMap = shopCarInfo.shopList[j];
-        for (var i = 0; i < goodsWrap.length; i++) {
-          var goods = goodsWrap[i].goods;
-          for (var p = 0; p < goods.length; p++) {
-            if (tmpShopCarMap.goodsId === goods[p].id) {
-              goods[p].buyNum = tmpShopCarMap.number;
-              break;
+    this.resetGoodsBuyNum();
+    let hideSummaryPopup = true;
+    let totalPrice = 0;
+    let totalScore = 0;
+    let shopNum = 0;
+    if (shopCarInfo) {
+      totalPrice = shopCarInfo.totalPrice;
+      totalScore = shopCarInfo.totalScore;
+      shopNum = shopCarInfo.shopNum;
+
+      if (goodsWrap.length > 0 && shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
+        hideSummaryPopup = false;
+        for (var j = 0; j < shopCarInfo.shopList.length; j++) {
+          var tmpShopCarMap = shopCarInfo.shopList[j];
+          for (var i = 0; i < goodsWrap.length; i++) {
+            var goods = goodsWrap[i].goods;
+            for (var p = 0; p < goods.length; p++) {
+              if (tmpShopCarMap.goodsId === goods[p].id) {
+                goods[p].buyNum = tmpShopCarMap.number;
+                break;
+              }
             }
           }
         }
       }
+    }
+    this.setData({
+      hideSummaryPopup: hideSummaryPopup,
+      totalPrice: shopCarInfo.totalPrice,
+      totalScore: shopCarInfo.totalScore,
+      shopNum: shopCarInfo.shopNum,
+      goodsWrap: goodsWrap
+    });  
 
-      this.setData({
-        hideSummaryPopup: false,
-        totalPrice: shopCarInfo.totalPrice,
-        totalScore: shopCarInfo.totalScore,
-        shopNum: shopCarInfo.shopNum,
-        goodsWrap: goodsWrap
-      });
+  },
+
+  resetGoodsBuyNum: function () {
+    var goodsWrap = this.data.goodsWrap;
+    if (goodsWrap.length > 0) {
+      for (var i = 0; i < goodsWrap.length; i++) {
+        var goods = goodsWrap[i].goods;
+        for (var j = 0; j < goods.length; j++) {
+          goods[j].buyNum = 0;
+        }
+      }
     }
   },
 
