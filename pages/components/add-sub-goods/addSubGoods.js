@@ -30,7 +30,11 @@ Component({
       var buyNum = that.data.buyNum + 1;
       var stores = that.data.goodsStore;
       var goodsId = that.properties.goodsId;
+      wx.showLoading({
+        "mask": true
+      });
       WXAPI.goodsDetail(goodsId).then(function (res) {
+        wx.hideLoading();
         //有规格选择
         if (res.data.properties && res.data.properties.length > 0) {
           //that.getGoodsStore(goodsId);
