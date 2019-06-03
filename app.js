@@ -1,6 +1,7 @@
 const WXAPI = require('wxapi/main')
 App({
   navigateToLogin: false,
+  bindChanged: false,
   onLaunch: function() {
     const that = this;
     // 检测新版本
