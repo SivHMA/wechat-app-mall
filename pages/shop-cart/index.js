@@ -8,9 +8,12 @@ Page({
       totalScoreToPay: 0,
       allSelect: true,
       noSelect: false,
-      list: []
+      list: [],
+      showInputModal: false
     },
     delBtnWidth: 120, //删除按钮宽度单位（rpx）
+    buyNum:0,
+    goodsId:0
   },
 
   //获取元素自适应后的实际宽度
@@ -379,8 +382,58 @@ Page({
     wx.navigateTo({
       url: "/pages/to-pay-order/index"
     })
+  },
+  inputBuyNum: function (e) {
+    this.setData({
+      showInputModal: true,
+      buyNum: e.currentTarget.dataset.buynum,
+      goodsId: e.currentTarget.dataset.goodsid
+    });
+  },
+  onCancelBuyNum:function(){
+    this.setData({
+      showInputModal: false
+    });
+  },
+
+  onConfirmBuyNum: function (e) {
+    this.setData({
+      showInputModal: false
+    });
+
+    var goodsId = e.detail.goodsId;
+    var number = e.detail.number;
+
+    let that = this;
+    WXAPI.goodsDetail(goodsId).then(function (res) {
+      if (res) {
+        let stores = res.data.basicInfo.stores;
+        if (number > stores) {
+          wx.showModal({
+            title: '提示',
+            content: '库存不足，请重新购买',
+            showCancel: false,
+            duration: 200
+          });
+          return;
+        }
+        var shopCarInfo = wx.getStorageSync('shopCarInfo');
+        if (shopCarInfo && shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
+          for (var i = 0; i < shopCarInfo.shopList.length; i++) {
+            var item = shopCarInfo.shopList[i];
+            if (item.goodsId === goodsId) {
+              item.number = number;
+              break;
+            }
+          }
+        }
+        that.setData({
+          goodsList: {
+            list: shopCarInfo.shopList
+          }
+        });
+        that.setGoodsList(that.getSaveHide(), that.totalPrice(), that.allSelect(), that.noSelect(), shopCarInfo.shopList);
+      }
+    });
   }
-
-
-
 })

@@ -3,4 +3,5 @@
 
 <view class="container">
      <template is="{{goodsList.list.length > 0 ? 'cart-goods-list' : 'no-goods'}}" data="{{...goodsList}}"></template>
+     <inputModal wx:if="{{showInputModal}}" bind:cancelBuyNum='onCancelBuyNum' bind:confirmBuyNum='onConfirmBuyNum' buyNum="{{buyNum}}" goodsId="{{goodsId}}"/>
 </view>
