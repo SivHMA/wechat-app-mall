@@ -1,13 +1,25 @@
 .add-cart-btn {
   position: relative;
-  max-width: 40rpx;
-  max-height: 40rpx;
+  max-width: 45rpx;
+  max-height: 45rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   box-sizing: border-box;
   margin: 6px 10rpx;
+}
+
+.sub-cart-btn {
+  position: relative;
+  max-width: 42rpx;
+  max-height: 42rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  margin: 7px 10rpx;
 }
 
 .buy-num {

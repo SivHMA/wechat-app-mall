@@ -73,17 +73,6 @@ Page({
       title: wx.getStorageSync('mallName')
     })
 
-    var shopCarInfo = wx.getStorageSync('shopCarInfo');
-    if (shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
-      that.setData({
-        hideSummaryPopup: false,
-        totalPrice: shopCarInfo.totalPrice,
-        totalScore: shopCarInfo.totalScore,
-        shopNum: shopCarInfo.shopNum
-      });
-    }
-    
-
     /**
      * 示例：
      * 调用接口封装方法
@@ -178,7 +167,7 @@ Page({
     if (shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
       for (var i = 0; i < shopCarInfo.shopList.length; i++) {
         var tmpShopCarMap = shopCarInfo.shopList[i];
-        if (tmpShopCarMap.goodsId == goodsId) {
+        if (tmpShopCarMap.goodsId == goodsId && tmpShopCarMap.active) {
           return tmpShopCarMap.number;
         }
       }
@@ -343,14 +332,18 @@ Page({
       totalScore = shopCarInfo.totalScore;
       shopNum = shopCarInfo.shopNum;
 
-      if (goods.length > 0 && shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
+      if (shopNum > 0 && shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
         hideSummaryPopup = false;
-        for (var j = 0; j < shopCarInfo.shopList.length; j++) {
-          var tmpShopCarMap = shopCarInfo.shopList[j];
-          for (var i = 0; i < goods.length; i++) {
-            if (tmpShopCarMap.goodsId === goods[i].id) {
-              goods[i].buyNum = tmpShopCarMap.number;
-              break;
+        if (goods.length > 0){
+          for (var j = 0; j < shopCarInfo.shopList.length; j++) {
+            var tmpShopCarMap = shopCarInfo.shopList[j];
+            if (tmpShopCarMap.active){
+              for (var i = 0; i < goods.length; i++) {
+                if (tmpShopCarMap.goodsId === goods[i].id) {
+                  goods[i].buyNum = tmpShopCarMap.number;
+                  break;
+                }
+              }
             }
           }
         }

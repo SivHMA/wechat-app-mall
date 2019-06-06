@@ -175,7 +175,9 @@ Page({
     shopCarInfo.totalScore = this.data.goodsList.totalScoreToPay; 
     shopCarInfo.totalPrice = total; 
     for (var i = 0; i < list.length; i++) {
-      tempNumber = tempNumber + list[i].number
+      if (list[i].active){
+        tempNumber = tempNumber + list[i].number
+      }
     }
     shopCarInfo.shopNum = tempNumber;
     wx.setStorage({

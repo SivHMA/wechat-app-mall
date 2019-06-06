@@ -38,16 +38,6 @@ Page({
     let that = this;
     wx.showNavigationBarLoading();
 
-    var shopCarInfo = wx.getStorageSync('shopCarInfo');
-    if (shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
-      that.setData({
-        hideSummaryPopup: false,
-        totalPrice: shopCarInfo.totalPrice,
-        totalScore: shopCarInfo.totalScore,
-        shopNum: shopCarInfo.shopNum
-      });
-    }
-
     WXAPI.goodsCategory().then(function(res) {
 
       var categories = [];
@@ -226,7 +216,7 @@ Page({
     if (shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
       for (var i = 0; i < shopCarInfo.shopList.length; i++) {
         var tmpShopCarMap = shopCarInfo.shopList[i];
-        if (tmpShopCarMap.goodsId == goodsId) {
+        if (tmpShopCarMap.goodsId == goodsId && tmpShopCarMap.active) {
           return tmpShopCarMap.number;
         }
       }
@@ -267,18 +257,22 @@ Page({
       totalScore = shopCarInfo.totalScore;
       shopNum = shopCarInfo.shopNum;
 
-      if (goodsWrap.length > 0 && shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
+      if (shopNum > 0 && shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
         hideSummaryPopup = false;
-        for (var j = 0; j < shopCarInfo.shopList.length; j++) {
-          var tmpShopCarMap = shopCarInfo.shopList[j];
-          for (var i = 0; i < goodsWrap.length; i++) {
-            var goods = goodsWrap[i].goods;
-            for (var p = 0; p < goods.length; p++) {
-              if (tmpShopCarMap.goodsId === goods[p].id) {
-                goods[p].buyNum = tmpShopCarMap.number;
-                break;
+        if (goodsWrap.length > 0){
+          for (var j = 0; j < shopCarInfo.shopList.length; j++) {
+            var tmpShopCarMap = shopCarInfo.shopList[j];
+            if (tmpShopCarMap.active){
+              for (var i = 0; i < goodsWrap.length; i++) {
+                var goods = goodsWrap[i].goods;
+                for (var p = 0; p < goods.length; p++) {
+                  if (tmpShopCarMap.goodsId === goods[p].id) {
+                    goods[p].buyNum = tmpShopCarMap.number;
+                    break;
+                  }
+                }
               }
-            }
+            }  
           }
         }
       }
