@@ -12,8 +12,9 @@ Page({
       showInputModal: false
     },
     delBtnWidth: 120, //删除按钮宽度单位（rpx）
-    buyNum:0,
-    goodsId:0
+    buyNum: 0,
+    goodsId: 0,
+    goodsName: ""
   },
 
   //获取元素自适应后的实际宽度
@@ -387,7 +388,8 @@ Page({
     this.setData({
       showInputModal: true,
       buyNum: e.currentTarget.dataset.buynum,
-      goodsId: e.currentTarget.dataset.goodsid
+      goodsId: e.currentTarget.dataset.goodsid,
+      goodsName: e.currentTarget.dataset.goodsname
     });
   },
   onCancelBuyNum:function(){
@@ -401,8 +403,9 @@ Page({
       showInputModal: false
     });
 
-    var goodsId = e.detail.goodsId;
+    var goodsId = this.data.goodsId;
     var number = e.detail.number;
+    var goodsName = this.data.goodsName;
 
     let that = this;
     WXAPI.goodsDetail(goodsId).then(function (res) {
@@ -411,7 +414,7 @@ Page({
         if (number > stores) {
           wx.showModal({
             title: '提示',
-            content: '库存不足，请重新购买',
+            content: goodsName+' 库存不足，请重新购买',
             showCancel: false,
             duration: 200
           });

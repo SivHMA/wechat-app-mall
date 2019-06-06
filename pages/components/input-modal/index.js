@@ -3,9 +3,6 @@ Component({
   properties: {
     buyNum: {
       type: Number
-    },
-    goodsId: {
-      type: Number
     }
   },
   /**
@@ -21,13 +18,11 @@ Component({
 
     confirmBuyNum: function(e) {
       var data = {
-        goodsId: this.properties.goodsId,
         number: this.data.buyNum
       };
       this.triggerEvent("confirmBuyNum", data);
     },
     setBuyNum: function(e) {
-
       this.setData({
         buyNum: e.detail.value
       });

@@ -23,7 +23,13 @@ Component({
       var buyNum = this.data.buyNum + 1;
       var goodsDetail = this.properties.goodsDetail;
       var stores = goodsDetail.stores;
-      var goodsId = goodsDetail.goodsId;
+      var goodsId = goodsDetail.id;
+      let that = this;
+      WXAPI.goodsDetail(goodsId).then(function (res) {
+        if (res && res.data && res.data.basicInfo){
+          stores = res.data.basicInfo.stores;
+        }
+      });
 
       if (stores < 1 || buyNum > stores) {
         wx.showModal({
