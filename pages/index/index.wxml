@@ -66,7 +66,7 @@
             <view wx:if="{{hasToken}}" class="goods-price">¥ {{item.minPrice}} /{{item.uom_name}}</view>
             <view wx:if="{{!hasToken}}" class="goods-price" bindtap="askPrice">￥询价</view>
             <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through'>¥ {{item.originalPrice}}</view>
-             <addSubGoods wx:if="{{hasToken}}" goodsId="{{item.id}}" buyNum="{{item.buyNum}}" bind:totalPriceChange='onTotalPriceChange'></addSubGoods>
+             <addSubGoods wx:if="{{hasToken}}" goodsDetail="{{item}}" buyNum="{{item.buyNum}}" stores="{{item.stores}}" bind:totalPriceChange='onTotalPriceChange'></addSubGoods>
         </view>  
         </view>
     </view>
@@ -77,7 +77,8 @@
     <image src="/images/cart/totalCart.png" class="cart-btn" bindtap="navigateToCartShop" />
     <view class="total">¥ {{totalPrice}} + {{totalScore}} 积分</view>
   </view>
-  <view class="to-pay-btn" bindtap="navigateToPayOrder">去结算</view>
+  <view wx:if="{{totalPrice > 0}}" class="to-pay-btn" bindtap="navigateToPayOrder">去结算</view>
+  <view wx:else class="to-pay-btn to-pay-btn-disabled" bindtap="navigateToPayOrder">去结算</view>
 </view>
 </view>
 

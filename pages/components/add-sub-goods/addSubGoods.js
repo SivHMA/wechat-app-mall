@@ -2,79 +2,55 @@ const WXAPI = require('../../../wxapi/main')
 var app = getApp();
 Component({
   properties: {
-    goodsId: {
-      type: String
+    goodsDetail: {
+      type: Object
     },
     buyNum: {
+      type:Number
+    },
+    stores: {
       type: Number
     }
   },
   data: {
     buyNum: 0,
-    shopCarInfo: {},
-    goodsStore: 99999999999,
-    price: 0,
-    score: 0,
-    hideSummaryPopup: true,
+    stores: 0,
     totalPrice: 0,
     totalScore: 0
   },
   methods: {
     tapAddGoods: function(e) {
-      this.setData({
-        buyNum: this.properties.buyNum,
-        hideSummaryPopup: false
-      })
-
-      var that = this;
-      var buyNum = that.data.buyNum + 1;
-      var stores = that.data.goodsStore;
-      var goodsId = that.properties.goodsId;
-      wx.showLoading({
-        "mask": true
-      });
+      var buyNum = this.data.buyNum + 1;
+      var goodsDetail = this.properties.goodsDetail;
+      var stores = goodsDetail.stores;
+      var goodsId = goodsDetail.id;
+      let that = this;
       WXAPI.goodsDetail(goodsId).then(function (res) {
-        wx.hideLoading();
-        //有规格选择
-        if (res.data.properties && res.data.properties.length > 0) {
-          //that.getGoodsStore(goodsId);
-          that.toDetailsTap(goodsId, false);
-        } else { // 没有规格选择
+        if (res && res.data && res.data.basicInfo){
           stores = res.data.basicInfo.stores;
-          that.setData({
-            goodsStore: stores
-          });
-
-          if (buyNum > stores) {
-            wx.showModal({
-              title: '提示',
-              content: res.data.basicInfo.name + ' 库存不足，请重新购买',
-              showCancel: false,
-              duration: 200
-            });
-            return;
-          }
-          //更新购物车信息
-          that.updateShopCarInfo(res.data);
         }
       });
-    },
 
-    toDetailsTap: function(goodsId, hideShopPopup) {
-      wx.navigateTo({
-        url: "/pages/goods-details/index?id=" + goodsId + "&hideShopPopup=" + hideShopPopup
-      })
+      if (stores < 1 || buyNum > stores) {
+        wx.showModal({
+          title: '提示',
+          content: goodsDetail.name + ' 库存不足，请重新购买',
+          showCancel: false,
+          duration: 200
+        });
+        return;
+      }
+
+      //更新购物车信息
+      this.updateShopCarInfo(goodsDetail);
     },
 
     subGoods: function(e) {
-      this.setData({
-        buyNum: this.data.buyNum - 1
-      })
       var shopCarInfo = wx.getStorageSync('shopCarInfo');
-      if (shopCarInfo.shopList.length > 0) {
+      if (shopCarInfo && shopCarInfo.shopList && shopCarInfo.shopList.length > 0) {
         for (var i = 0; i < shopCarInfo.shopList.length; i++) {
           var tmpShopCarMap = shopCarInfo.shopList[i];
-          if (tmpShopCarMap.goodsId == this.properties.goodsId) {
+          if (tmpShopCarMap.goodsId == this.properties.goodsDetail.id) {
             tmpShopCarMap.number = tmpShopCarMap.number - 1;
             if (tmpShopCarMap.number === 0) {
               tmpShopCarMap.active = false;
@@ -89,6 +65,9 @@ Component({
       }
       shopCarInfo.totalPrice = parseFloat(shopCarInfo.totalPrice.toFixed(2));
       wx.setStorageSync("shopCarInfo", shopCarInfo);
+      this.setData({
+        buyNum: this.data.buyNum - 1
+      });
       var data = {
         totalPrice: shopCarInfo.totalPrice,
         totalScore: shopCarInfo.totalScore,
@@ -184,60 +163,20 @@ Component({
 
     getShopGoodInfo: function(goodsDetail) {
       return {
-        goodsId: goodsDetail.basicInfo.id,
-        pic: goodsDetail.basicInfo.pic, // 产品图片url
-        name: goodsDetail.basicInfo.name,
+        goodsId: goodsDetail.id,
+        pic: goodsDetail.pic, // 产品图片url
+        name: goodsDetail.name,
         propertyChildIds: "", //产品规格信息
         label: "", //产品规格名称
-        price: goodsDetail.basicInfo.minPrice, //选择产品规格的价格
-        score: goodsDetail.basicInfo.minScore,
+        price: goodsDetail.minPrice, //选择产品规格的价格
+        score: goodsDetail.minScore,
         left: "",
         active: true,
         number: 1,
-        logisticsType: goodsDetail.basicInfo.logisticsId,
+        logisticsType: goodsDetail.logisticsId,
         logistics: goodsDetail.logistics,
-        weight: goodsDetail.basicInfo.weight
+        weight: goodsDetail.weight
       }
-    },
-
-    getGoodsStore: function(goodsId, propertyChildIds) {
-      wx.request({
-        url: app.globalData.subDomain + '/shop/goods/price',
-        data: {
-          goodsId: goodsId,
-          propertyChildIds: propertyChildIds
-        },
-        success: function(res) {
-          this.setData({
-            goodsStore: res.data.stores,
-            price: res.data.data.price,
-            score: res.data.data.score
-          });
-        }
-      })
-      /*this.setData({
-        goodsStore: 10,
-        price: 125,
-        score: 10
-      });*/
     }
-  },
-
-  lifetimes: {
-    attached() {
-      /*var shopCarInfo = wx.getStorageSync('shopCarInfo');
-       if (shopCarInfo.shopList.length > 0) {
-         this.setData({
-           hideSummaryPopup: false,
-           totalPrice: shopCarInfo.totalPrice,
-           totalScore: shopCarInfo.totalScore,
-           shopNum: shopCarInfo.shopNum
-         });
-         
-       }*/
-    },
-    detached() {
-      // 在组件实例被从页面节点树移除时执行
-    },
   }
 })
