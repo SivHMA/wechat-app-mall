@@ -31,7 +31,7 @@
               <view class='goods-price-line'>
                   <view wx:if="{{hasToken}}" class="goods-price">￥{{goods.minPrice}} /{{goods.uom_name}}</view>
                   <view wx:if="{{!hasToken}}" class="goods-price" bindtap="askPrice">￥询价</view>
-                  <addSubGoods wx:if="{{hasToken}}" goodsDetail="{{goods}}" buyNum="{{goods.buyNum}}" stores="{{goods.stores}}" bind:totalPriceChange='onTotalPriceChange'></addSubGoods>
+                  <addSubGoods wx:if="{{hasToken}}" goodsId="{{goods.id}}" goodsDetail="{{goods}}" buyNum="{{goods.buyNum}}" stores="{{goods.stores}}" bind:totalPriceChange='onTotalPriceChange'></addSubGoods>
               </view>
             </view>
           </view>
