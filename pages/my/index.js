@@ -93,6 +93,7 @@ Page({
     })
   },
   relogin:function(){
+    app.navigateToLogin = false;
     app.goLoginPageTimeOut()
   },
   bingLogin: function () {
