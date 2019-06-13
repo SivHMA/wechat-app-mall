@@ -97,9 +97,14 @@ Page({
     app.goLoginPageTimeOut()
   },
   bingLogin: function () {
-    wx.navigateTo({
-      url: "/pages/bind-login/index"
-    })
+    const token = wx.getStorageSync('token');
+    if (token){
+      wx.navigateTo({
+        url: "/pages/bind-login/index"
+      })
+    }else{
+      this.relogin();
+    }
   },
   goAsset: function () {
     wx.navigateTo({
