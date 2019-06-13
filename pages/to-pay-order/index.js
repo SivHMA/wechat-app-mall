@@ -127,7 +127,12 @@ Page({
       postData.calculate = "true";
     }
 
+    wx.showLoading({
+      mask: true,
+      title: '提交中...'
+    });
     WXAPI.orderCreate(postData).then(function (res) {
+      wx.hideLoading();
       if (res.code != 0) {
         wx.showModal({
           title: '错误',
