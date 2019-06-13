@@ -108,6 +108,10 @@ Page({
     }
     apiResult.then(function (res) {
       if (res.code != 0) {
+        if (res.code==-4){
+          wx.removeStorageSync('userid');
+          app.bindChanged = true;
+        }
         // 登录错误 
         wx.hideLoading();
         wx.showModal({

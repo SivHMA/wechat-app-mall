@@ -134,6 +134,10 @@ Page({
     WXAPI.orderCreate(postData).then(function (res) {
       wx.hideLoading();
       if (res.code != 0) {
+        if (res.code == -4) {
+          wx.removeStorageSync('userid');
+          app.bindChanged = true;
+        }
         wx.showModal({
           title: '错误',
           content: res.msg,
