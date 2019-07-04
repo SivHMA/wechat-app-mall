@@ -63,7 +63,7 @@ Page({
   },
   onLoad: function() {
     var that = this
-    let token = wx.getStorageSync('token');
+    let token = wx.getStorageSync('userid');
     if (token) {
       this.setData({
         hasToken: true
@@ -376,7 +376,7 @@ Page({
     })
   },
   onPullDownRefresh: function() {
-    let token = wx.getStorageSync('token');
+    let token = wx.getStorageSync('userid');
     if (token) {
       this.setData({
         hasToken: true

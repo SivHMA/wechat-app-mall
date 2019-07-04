@@ -36,7 +36,7 @@ Page({
     })
   },
   onLoad: function(e) {
-    let token = wx.getStorageSync('token');
+    let token = wx.getStorageSync('userid');
     if (token) {
       this.setData({
         hasToken: true

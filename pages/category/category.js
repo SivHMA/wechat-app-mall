@@ -24,7 +24,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    let token = wx.getStorageSync('token');
+    let token = wx.getStorageSync('userid');
     if (token) {
       this.setData({
         hasToken: true
@@ -71,7 +71,7 @@ Page({
 
   },
   onPullDownRefresh: function () {
-    let token = wx.getStorageSync('token');
+    let token = wx.getStorageSync('userid');
     if (token) {
       this.setData({
         hasToken: true
