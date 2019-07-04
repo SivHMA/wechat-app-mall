@@ -132,12 +132,12 @@ Page({
       title: '提交中...'
     });
     WXAPI.orderCreate(postData).then(function (res) {
-      wx.hideLoading();
       if (res.code != 0) {
         if (res.code == -4) {
           wx.removeStorageSync('userid');
           app.bindChanged = true;
         }
+        wx.hideLoading();
         wx.showModal({
           title: '错误',
           content: res.msg,
@@ -159,6 +159,7 @@ Page({
           yunPrice: res.data.amountLogistics
         });
         that.getMyCoupons();
+        wx.hideLoading();
         return;
       }
       WXAPI.addTempleMsgFormid({
