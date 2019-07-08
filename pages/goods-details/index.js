@@ -108,12 +108,28 @@ Page({
     });
   },
   toAddShopCar: function() {
+    if (!this.data.hasToken) {
+      wx.showModal({
+        title: "提示",
+        content: "请先到个人中心登录或绑定用户",
+        showCancel: false
+      })
+      return;
+    }
     this.setData({
       shopType: "addShopCar"
     })
     this.bindGuiGeTap();
   },
   tobuy: function() {
+    if (!this.data.hasToken){
+      wx.showModal({
+        title: "提示",
+        content: "请先到个人中心登录或绑定用户",
+        showCancel: false
+      })
+      return;
+    }
     this.setData({
       shopType: "tobuy",
       selectSizePrice: this.data.goodsDetail.basicInfo.minPrice
