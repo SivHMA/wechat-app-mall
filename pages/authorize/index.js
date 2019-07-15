@@ -137,17 +137,42 @@ Page({
               referrer = referrer_storge;
             }
             if (0) {
-              var registerData = {
-                code: code,
-                encryptedData: encryptedData,
-                iv: iv,
-                referrer: referrer
-              }
-              wx.setStorageSync('registerData', registerData)
-              wx.navigateTo({
-                url: "/pages/bind-login/index"
+
+              wx.showModal({
+                title: '绑定并登录系统账号？',
+                content: '',
+                success: function (res) {
+                  if (res.confirm) {
+                    
+                    var registerData = {
+                      code: code,
+                      encryptedData: encryptedData,
+                      iv: iv,
+                      referrer: referrer
+                    }
+                    wx.setStorageSync('registerData', registerData)
+                    wx.navigateTo({
+                      url: "/pages/bind-login/index"
+                    })
+                    return;
+
+                  }else{
+
+                    WXAPI.register({
+                      code: code,
+                      encryptedData: encryptedData,
+                      iv: iv,
+                      referrer: referrer
+                    }).then(function (res) {
+                      wx.hideLoading();
+                      that.login();
+                    })
+                    
+                  }
+                }
               })
               return;
+
             }
             // 下面开始调用注册接口
             WXAPI.register( {
