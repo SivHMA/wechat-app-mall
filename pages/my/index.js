@@ -19,7 +19,8 @@ Page({
     } else {
       that.setData({
         userInfo: userInfo,
-        version: CONFIG.version
+        version: CONFIG.version,
+        vipLevel: app.globalData.vipLevel
       })
     }
     this.getUserApiInfo();
@@ -28,7 +29,7 @@ Page({
   aboutUs : function () {
     wx.showModal({
       title: '关于我们',
-      content: '本系统基于开源小程序商城系统 https://github.com/EastWorld/wechat-app-mall 搭建，祝大家使用愉快！',
+      content: 'Oejia 客优云，是一个服务于企业快速业务开发实现的技术服务商，提供优质的企业方案顾问，用于快速、便捷地实现各种基于 Odoo 的业务场景',
       showCancel:false
     })
   },
@@ -36,7 +37,7 @@ Page({
     if (!e.detail.errMsg || e.detail.errMsg != "getPhoneNumber:ok") {
       wx.showModal({
         title: '提示',
-        content: '无法获取手机号码',
+        content: '无法获取手机号码:' + e.detail.errMsg,
         showCancel: false
       })
       return;
@@ -47,6 +48,10 @@ Page({
       encryptedData: e.detail.encryptedData,
       iv: e.detail.iv
     }).then(function (res) {
+      if (res.code === 10002) {
+        app.goLoginPageTimeOut()
+        return
+      }
       if (res.code == 0) {
         wx.showToast({
           title: '绑定成功',

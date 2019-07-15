@@ -23,7 +23,12 @@
     "pages/sign/index",
     "pages/fetch-coupon/index",
     "pages/bind-login/index",
-    "pages/category/category"
+    "pages/category/category",
+    "pages/maidan/index",
+    "pages/fx/apply",
+    "pages/fx/apply-status",
+    "pages/fx/members",
+    "pages/fx/commisionLog"
   ],
   "window":{
     "backgroundTextStyle":"light",

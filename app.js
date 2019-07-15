@@ -54,6 +54,10 @@ App({
         wx.hideToast()
       }
     });
+    //  获取接口和后台权限
+    WXAPI.vipLevel().then(res => {
+      that.globalData.vipLevel = res.data
+    })
     //  获取商城名称
     WXAPI.queryConfig({
       key: 'mallName'
@@ -100,6 +104,7 @@ App({
     if (this.navigateToLogin){
       return
     }
+    wx.removeStorageSync('token')
     this.navigateToLogin = true
     setTimeout(function() {
       wx.navigateTo({
@@ -114,7 +119,16 @@ App({
       })
     }, 1000)
   },
+  onShow (e) {
+    this.globalData.launchOption = e
+    // 保存邀请人
+    if (e && e.query && e.query.inviter_id) {
+      wx.setStorageSync('referrer', e.query.inviter_id)
+    }
+  },
   globalData: {                
-    isConnected: true
-  }  
+    isConnected: true,
+    launchOption: undefined,
+    vipLevel: 0
+  }
 })

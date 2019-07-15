@@ -300,5 +300,29 @@ module.exports = {
   },
   rechargeSendRules: () => {
     return request('/user/recharge/send/rule', true, 'get')
+  },
+  payBillDiscounts: () => {
+    return request('/payBill/discounts', true, 'get')
+  },
+  payBill: (data) => {
+    return request('/payBill/pay', true, 'post', data)
+  },
+  vipLevel: () => {
+    return request('/config/vipLevel', true, 'get')
+  },
+  fxApply: (token, name, mobile) => {
+    return request('/saleDistribution/apply', true, 'post', { token, name, mobile })
+  },
+  fxApplyProgress: (token) => {
+    return request('/saleDistribution/apply/progress', true, 'get', { token })
+  },
+  fxMembers: (data) => {
+    return request('/saleDistribution/members', true, 'post', data)
+  },
+  fxCommisionLog: (data) => {
+    return request('/saleDistribution/commision/log', true, 'post', data)
+  },
+  wxaQrcode: (data) => {
+    return request('/qrcode/wxa/unlimit', true, 'post', data)
   }
 }
