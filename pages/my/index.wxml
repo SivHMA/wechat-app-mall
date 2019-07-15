@@ -53,7 +53,7 @@
   </block>
 
   <view style="height:10rpx;background: #eee;width:100%;"></view>
-  <view class="my-item" wx:if="{{vipLevel > 0}}">
+  <view class="my-item" wx:if="{{vipLevel < 0}}">
     <navigator url="/pages/maidan/index" hover-class="navigator-hover">优惠买单</navigator>
   </view>
   <view class="my-item">
