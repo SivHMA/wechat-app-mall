@@ -68,7 +68,23 @@ Page({
             that.onShow();
           })
         } else {
-          wxpay.wxpay(app, money, orderId, "/pages/order-list/index");
+          let _fee = parseFloat((money * 0.006).toFixed(2));
+          let _all = money + _fee;
+          let _msg = '支付总额: ' + _all + '\r\n包含微信支付手续费: ' + _fee;
+          wx.showModal({
+            title: '请确认支付',
+            content: _msg,
+            confirmText: "确认支付",
+            cancelText: "取消支付",
+            success: function (res) {
+              console.log(res);
+              if (res.confirm) {
+                wxpay.wxpay(app, _all, orderId, "/pages/order-list/index");
+              } else {
+                console.log('用户点击取消支付')
+              }
+            }
+          });
         }
       } else {
         wx.showModal({
