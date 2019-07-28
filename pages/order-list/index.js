@@ -1,6 +1,7 @@
 const wxpay = require('../../utils/pay.js')
 const app = getApp()
 const WXAPI = require('../../wxapi/main')
+const shopCardUtils = require('../../utils/shopCartUtils.js')
 Page({
   data: {
     statusType: ["待付款", "待发货", "待收货", "已取消", "已完成"],
@@ -181,5 +182,77 @@ Page({
   onReachBottom: function() {
     // 页面上拉触底事件的处理函数
 
-  }
+  },
+
+  addToShopCartFromOrder: function (e) {
+    // 页面上拉触底事件的处理函数
+
+    var orderId = e.currentTarget.dataset.id;
+    var that = this;
+    WXAPI.orderDetail(orderId, wx.getStorageSync('token')).then(function (res) {
+      if (res.code != 0) {
+        wx.showModal({
+          title: '错误',
+          content: res.msg,
+          showCancel: false
+        })
+        return;
+      }
+      var orderDetail = res.data;
+      if (orderDetail && orderDetail.goods && orderDetail.goods.length > 0) {
+        var shopCarInfo = shopCardUtils.getShopCarInfo();
+        const isDone = false;
+        for (var i = 0; i < orderDetail.goods.length; i++) {
+          const orderGood = orderDetail.goods[i];
+          const goodsId = orderGood.goodsId;
+          const goodsCount = orderDetail.goods.length;
+          var count = 0;
+          WXAPI.goodsDetail(goodsId).then(function (res) {
+            if (res.data) {
+              var goodDetail = shopCardUtils.buildShopCarItem(res.data);
+              goodDetail.number = orderGood.number;
+              count = count +1;
+
+              if (orderGood.propertyChildIds) {
+                WXAPI.goodsPrice({
+                  goodsId: goodsId,
+                  propertyChildIds: orderGood.propertyChildIds
+                }).then(function (res) {
+                  goodDetail.price = res.data.price;
+                  goodDetail.score = res.data.score;
+                  goodDetail.stores = res.data.stores;
+                  goodDetail.propertyChildIds = orderGood.propertyChildIds;
+                  goodDetail.label = orderGood.property;
+                  that.updateAndRefreshShopCart(count, goodsCount, goodDetail, shopCarInfo);
+                })
+              } else { 
+                that.updateAndRefreshShopCart(count, goodsCount, goodDetail, shopCarInfo);
+              }
+            }
+          })
+        } 
+      } else {
+        wx.showModal({
+          title: '错误',
+          content: "此订单没有可以回购的商品",
+          showCancel: false
+        })
+        return;
+      }
+    })
+  },
+
+  updateAndRefreshShopCart: function (count, goodsCount, goodDetail, shopCarInfo) {
+    shopCardUtils.addToShopCart(goodDetail, shopCarInfo);
+    if (count === goodsCount) {
+      wx.setStorage({
+        key: 'shopCarInfo',
+        data: shopCarInfo
+      })
+      wx.reLaunch({
+        url: "/pages/shop-cart/index"
+      });
+    }
+
+  },
 })
