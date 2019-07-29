@@ -277,8 +277,13 @@ Page({
     });
     this.setGoodsList(this.getSaveHide(), this.totalPrice(), this.allSelect(), this.noSelect(), list);
   },
-  toPayOrder: function() {
+  toPayOrder: function(e) {
     wx.showLoading();
+    WXAPI.addTempleMsgFormid({
+      token: wx.getStorageSync('token'),
+      type: 'form',
+      formId: e.detail.formId
+    })
     var that = this;
     if (this.data.goodsList.noSelect) {
       wx.hideLoading();

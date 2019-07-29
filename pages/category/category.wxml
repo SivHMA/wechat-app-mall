@@ -49,5 +49,7 @@
     <image src="/images/cart/totalCart.png" class="cart-btn" bindtap="navigateToCartShop" />
     <view class="total">¥ {{totalPrice}} + {{totalScore}} 积分</view>
   </view>
-  <view class="to-pay-btn" bindtap="navigateToPayOrder">去结算</view>
+  <form bindsubmit="navigateToPayOrder" report-submit="true">
+  <button class="to-pay-btn" formType="submit">去结算</button>
+  </form>
 </view>

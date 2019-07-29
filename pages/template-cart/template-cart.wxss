@@ -189,7 +189,12 @@ page{
     background-color: #e64340;
     font-size:32rpx;
     color:#ffffff;
+    border-radius: 0;
 }
+.to-pay-btn::after{
+    border-radius: 0;
+}
+
 .jiesuan-box .to-pay-btn.no-select{
     background-color: #ccc;
 }

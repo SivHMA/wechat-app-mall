@@ -297,8 +297,13 @@ Page({
     });
 
   },
-  navigateToPayOrder: function () {
+  navigateToPayOrder: function (e) {
     wx.hideLoading();
+    WXAPI.addTempleMsgFormid({
+      token: wx.getStorageSync('token'),
+      type: 'form',
+      formId: e.detail.formId
+    })
     wx.navigateTo({
       url: "/pages/to-pay-order/index"
     })

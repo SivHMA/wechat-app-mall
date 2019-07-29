@@ -338,6 +338,10 @@ swiper-item image {
   font-size:34rpx;
   color:#ffffff;
   background-color: #e64340;
+  border-radius: 0;
+}
+.to-pay-btn::after{
+  border-radius: 0;
 }
 .buy-num-box .num-box .hui{
   background-color: #f5f5f9;
