@@ -15,6 +15,8 @@ Page({
     expected_date: undefined,
 
     hasNoCoupons: true,
+    use_score: 0,
+    all_score: 0,
     coupons: [],
     youhuijine: 0, //优惠券金额
     multiIndex: [0, 0, 0],
@@ -75,6 +77,7 @@ Page({
     var loginToken = wx.getStorageSync('token') // 用户登录 token
     var remark = ""; // 备注信息
     var expected_date = "";
+    var use_score = 0;
     if (e) {
       remark = e.detail.value.remark; // 备注信息
       expected_date = that.data.expected_date; // 备注信息
@@ -86,12 +89,28 @@ Page({
         })
         return
       }
+      const input_score = e.detail.value.use_score;
+      var err_msg = null;
+      if (input_score){
+        if (input_score < 10) err_msg = '至少要10个积分';
+        if (input_score > that.data.all_score) err_msg = '积分数超过了可用积分';
+        if (err_msg){
+          wx.showModal({
+            title: '提示',
+            content: err_msg,
+            showCancel: false
+          })
+          return
+        }
+        use_score = input_score;
+      }
     }
 
     var postData = {
       token: loginToken,
       goodsJsonStr: that.data.goodsJsonStr,
       expected_date: expected_date,
+      use_score: use_score,
       remark: remark
     };
     if (that.data.kjId) {
@@ -153,6 +172,7 @@ Page({
       if (!e) {
         that.setData({
           totalScoreToPay: res.data.score,
+          all_score: res.data.all_score || 0,
           isNeedLogistics: res.data.isNeedLogistics,
           allGoodsPrice: res.data.amountTotle,
           allGoodsAndYunPrice: parseFloat((res.data.amountLogistics + res.data.amountTotle).toFixed(2)),
