@@ -41,7 +41,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
-
+    app.navigateToLogin = false;
   },
 
   /**
@@ -77,6 +77,11 @@ Page({
         icon: 'none',
       })
     }
+  },
+  bindCancel: function() {
+    wx.switchTab({
+      url: "/pages/index/index"
+    });
   },
   login: function() {
     const that = this;
