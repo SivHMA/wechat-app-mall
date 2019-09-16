@@ -58,13 +58,9 @@
     {{userMobile}}
   </view>
   <view style="height:20rpx;background: #eee;width:100%;"></view>
-  <view wx:if="{{!username}}" class="my-item" style="border:none;padding:0rpx;margin-top:30rpx;background:none;border:none;height:auto;line-height:auto;">
-    <button type="primary" bindtap="bingLogin">绑定用户</button>
-  </view>
-  <view wx:if="{{username}}" class="" style="height:120rpx;line-height:120rpx;">
+  <view wx:if="{{username}}" class="" style="height:80rpx;line-height:80rpx;">
     当前用户 {{nickname}}
   </view>
-  <view wx:if="{{username}}" class="my-item" style="border:none;padding-right:150rpx;width:auto;height:auto;line-height:auto;"><button type="default" bindtap="bingLogin">重新绑定用户</button></view>
   <view style="height:20rpx;background: #eee;width:100%;"></view>
   <view class="about" bindtap="aboutUs">
     关于我们
@@ -73,6 +69,15 @@
   <view style="height:20rpx;background: #eee;width:100%;"></view>
   <view class="my-item" style="border:none;padding:0rpx;margin:0rpx;background:none;border:none;height:auto;line-height:auto;">
     <button type="warn" bindtap="relogin">重新授权登录</button>
+  </view>
+
+  <view wx:if="{{!username}}" style="height:20rpx;background: #eee;width:100%;"></view>
+  <view wx:if="{{!username}}" class="my-item" style="border:none;padding:0rpx;margin:0rpx;background:none;border:none;height:auto;line-height:auto;">
+    <button type="primary" bindtap="bingLogin">绑定用户</button>
+  </view>
+  <view wx:if="{{username}}" style="height:20rpx;background: #eee;width:100%;"></view>
+  <view wx:if="{{username}}" class="my-item" style="border:none;padding:0rpx;margin:0rpx;background:none;border:none;height:auto;line-height:auto;">
+    <button type="default" bindtap="bingLogin">重新绑定用户</button>
   </view>
   
   <view style="height:20rpx;background: #eee;width:100%;"></view>
