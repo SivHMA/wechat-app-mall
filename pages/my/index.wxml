@@ -51,9 +51,6 @@
   <view class="my-item">
     <navigator url="/pages/mycoupons/index" hover-class="navigator-hover">优惠券</navigator>
   </view>
-  <view wx:if="{{!userMobile}}" class="my-item" style="border:none;padding-right:150rpx;width:auto;height:auto;line-height:auto;">
-    <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">绑定手机号码</button>
-  </view>
   <view wx:if="{{userMobile}}" class="my-item" style="border:none;padding-right:150rpx;width:auto;">
     {{userMobile}}
   </view>
@@ -64,6 +61,11 @@
   <view style="height:20rpx;background: #eee;width:100%;"></view>
   <view class="about" bindtap="aboutUs">
     关于我们
+  </view>
+
+  <view wx:if="{{!userMobile}}" style="height:20rpx;background: #eee;width:100%;"></view>
+  <view wx:if="{{!userMobile}}" class="my-item" style="border:none;padding:0rpx;margin:0rpx;background:none;border:none;height:auto;line-height:auto;">
+    <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">绑定手机号码</button>
   </view>
 
   <view style="height:20rpx;background: #eee;width:100%;"></view>
