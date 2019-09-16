@@ -58,7 +58,7 @@
     {{userMobile}}
   </view>
   <view style="height:20rpx;background: #eee;width:100%;"></view>
-  <view wx:if="{{username}}" class="" style="height:80rpx;line-height:80rpx;">
+  <view wx:if="{{username}}" class="my-item" style="border:none;padding-right:150rpx;width:auto;">
     当前用户 {{nickname}}
   </view>
   <view style="height:20rpx;background: #eee;width:100%;"></view>
