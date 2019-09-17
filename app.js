@@ -88,7 +88,7 @@ App({
       }
     })
     // 判断是否登录
-    let token = wx.getStorageSync('token');
+    /*let token = wx.getStorageSync('token');
     if (!token) {
       that.goLoginPageTimeOut()
       return
@@ -98,7 +98,10 @@ App({
         wx.removeStorageSync('token')
         that.goLoginPageTimeOut()
       }
-    })
+    })*/
+    wx.goLogin = () => {
+      that.goLoginPageTimeOut();
+    }
   },
   goLoginPageTimeOut: function() {
     if (this.navigateToLogin){
@@ -106,11 +109,16 @@ App({
     }
     wx.removeStorageSync('token')
     this.navigateToLogin = true
-    setTimeout(function() {
+    //setTimeout(function() {
       wx.navigateTo({
         url: "/pages/authorize/index"
       })
-    }, 1000)
+    //}, 1000)
+  },
+  goMy: function () {
+    wx.reLaunch({
+      url: "/pages/my/index"
+    })
   },
   goStartIndexPage: function() {
     setTimeout(function() {

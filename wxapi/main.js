@@ -14,6 +14,9 @@ const request = (url, needSubDomain, method, data) => {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       success(request) {
+        if ([300, 901, 10000].indexOf(request.data.code)>=0){
+          wx.goLogin();
+        }
         resolve(request.data)
       },
       fail(error) {
